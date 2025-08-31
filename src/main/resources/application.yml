@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/loandb
+    username: postgres
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+app:
+  api:
+    income:
+      url: https://66055cd12ca9478ea1801f2e.mockapi.io/api/users/income
+
+loan:
+  minimalIncome: 40000
+  minimalCarPrice: 1000000
+  incomePercentage: 0.5
+  carPricePercentage: 0.3
+  carMinPriceRange: 800000
+  carMaxPriceRange: 1200000
