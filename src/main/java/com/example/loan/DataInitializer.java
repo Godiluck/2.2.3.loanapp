@@ -31,17 +31,17 @@ public class DataInitializer {
 
     @PostConstruct
     public void loadData() {
-        IncomeResponseDto[] incomeResponses = incomeClient.fetchIncomeResponse();
+        IncomeResponseDto[] incomes = incomeClient.fetchIncomeResponse();
 
-        if (incomeResponses == null) {
+        if (incomes == null) {
             return;
         }
 
-        for (IncomeResponseDto incomeResponse : incomeResponses) {
-            Car car = new Car(new Random().nextInt(carMaxPriceRange - carMinPriceRange + 1) + carMinPriceRange);
+        for (IncomeResponseDto income : incomes) {
+            Car car = Car.builder().price(new Random().nextInt(carMaxPriceRange - carMinPriceRange + 1) + carMinPriceRange).build();
             carRepository.save(car);
 
-            User user = new User(incomeResponse.getIncome(), car);
+            User user = User.builder().income(income.getIncome()).car(car).build();
 
             userRepository.save(user);
         }

@@ -6,11 +6,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "cars")
 public class Car {
@@ -23,12 +29,4 @@ public class Car {
 
     @OneToOne(mappedBy = "car")
     private User user;
-
-    public Car() {
-    }
-
-    public Car(Integer price) {
-        this.price = price;
-    }
-
 }
