@@ -4,28 +4,24 @@ import com.example.loan.model.Car;
 import com.example.loan.model.User;
 import com.example.loan.repository.CarRepository;
 import com.example.loan.repository.UserRepository;
-import com.example.loan.service.CustomTableService;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.example.incomestarter.starter.IncomeClient;
-import com.example.incomestarter.model.IncomeRecord;
+import com.example.incomestarter.dto.IncomeResponseDto;
 
 import java.util.Random;
 
 @Component
+@RequiredArgsConstructor
 public class DataInitializer {
 
-    @Autowired
-    private CustomTableService customTableService;
+    private final UserRepository userRepository;
+    private final CarRepository carRepository;
+    private final IncomeClient incomeClient;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CarRepository carRepository;
 
     @Value("${loan.carMinPriceRange}")
     private Integer carMinPriceRange;
@@ -33,26 +29,19 @@ public class DataInitializer {
     @Value("${loan.carMaxPriceRange}")
     private Integer carMaxPriceRange;
 
-    @Autowired
-    private IncomeClient incomeClient;
-
-
     @PostConstruct
     public void loadData() {
-        customTableService.deleteAllAndResetAutoIncrement("users", "users_id_seq");
-        customTableService.deleteAllAndResetAutoIncrement("cars", "cars_id_seq");
+        IncomeResponseDto[] incomeResponses = incomeClient.fetchIncomeResponse();
 
-        IncomeRecord[] incomeRecords = incomeClient.fetchIncomeRecords();
-
-        if (incomeRecords == null) {
+        if (incomeResponses == null) {
             return;
         }
 
-        for (IncomeRecord incomeRecord : incomeRecords) {
+        for (IncomeResponseDto incomeResponse : incomeResponses) {
             Car car = new Car(new Random().nextInt(carMaxPriceRange - carMinPriceRange + 1) + carMinPriceRange);
             carRepository.save(car);
 
-            User user = new User(incomeRecord.getIncome(), car);
+            User user = new User(incomeResponse.getIncome(), car);
 
             userRepository.save(user);
         }
