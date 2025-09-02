@@ -18,16 +18,15 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class DataInitializer {
 
-    private final UserRepository userRepository;
-    private final CarRepository carRepository;
-    private final IncomeClient incomeClient;
-
-
     @Value("${loan.carMinPriceRange}")
     private Integer carMinPriceRange;
 
     @Value("${loan.carMaxPriceRange}")
     private Integer carMaxPriceRange;
+
+    private final UserRepository userRepository;
+    private final CarRepository carRepository;
+    private final IncomeClient incomeClient;
 
     @PostConstruct
     public void loadData() {

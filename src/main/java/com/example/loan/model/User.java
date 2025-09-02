@@ -28,7 +28,6 @@ public class User {
 
     private Integer income;
 
-
     @OneToOne(fetch = FetchType.LAZY)
     private Car car;
 }

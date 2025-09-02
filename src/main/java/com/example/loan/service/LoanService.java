@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoanService {
 
-    private final UserRepository userRepository;
-    private final CarRepository carRepository;
-
     @Value("${loan.minimalIncome}")
     private int minimalIncome;
 
@@ -26,6 +23,9 @@ public class LoanService {
 
     @Value("${loan.carPricePercentage}")
     private double maxCarLoanPercentage;
+
+    private final UserRepository userRepository;
+    private final CarRepository carRepository;
 
     public int getApprovedLoanAmount(Long userId) {
         User user = userRepository.findById(userId)
